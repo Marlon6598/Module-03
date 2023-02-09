@@ -1,10 +1,22 @@
 import os
-import csv
-budget_csv = os.path.join('Resources', 'budget_data.csv') # Specifies directory of .csv file
+import csv # imports file-handling funcions
 
-def finAnalysis(profit_data):
-    date = str(profit_data[0])
-    final_amount = int(profit_data[1])
+csvFilePath = os.path.join('Resources', 'budget_data.csv') # Specifies directory of .csv file
 
-    print(profit_data)
+with open(csvFilePath) as csvFile: # opens the file and saves it as an object named csvFile
+    csvReader = csv.reader(csvFile, delimiter=",") #specifies the object name and delimiter for the reader in the open() function
+    header = next(csvReader) # reads the row of headers and skips over this row for our data
     
+    totalMonths = len(list(csvReader)) # the total months is the length of the dataset minus the header
+
+    total = 1
+
+
+
+print("Financial Analysis")
+print("----------------------------")
+print(f"Total Months: {totalMonths}")
+print(f"Total: ${total}")
+print(f"Average Change: ")
+print(f"Greatest increase in Profits: ")
+print(f"Greatest Decrease in Profits: ")
