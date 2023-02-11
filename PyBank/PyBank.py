@@ -3,36 +3,58 @@ import csv # imports file-handling funcions
 
 csvFilePath = os.path.join('Resources', 'budget_data.csv') # Specifies directory of .csv file
 
-profit = []
-monthly_changes = []
-date = []
+monthlyChange = [] # list to hold the difference between each pair of dates
+date = [] # list to hold dates
 
-totalProfits = 0
 totalMonths = 0
-currentChange = 0
+totalProfits = 0
+profitsChange = 0
+firstProfit = 0
+count = 0
 
 with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and saves it as an object named csvFile
     csvReader = csv.reader(csvFile, delimiter=",") # specifies the object name and delimiter for the reader in the open() function
     header = next(csvReader) # reads the row of headers and skips over this row for our data
 
-    for i, row in enumerate(csvReader): # 
+    for row in csvReader:
+        count += 1
+        date.append(row[0]) # the rows in the dates column is appended to date
+
         revenue = int(row[1])
         totalMonths += 1 # the total months is the total count of each row sans the header
-        totalProfits = totalProfits + revenue # the total profit is the summation of all rows sans the header
+        totalProfits = totalProfits + int(row[1]) # the total profit is the summation of all rows sans the header
 
+        monthlyChangeProfits = revenue - firstProfit
+        
+        monthlyChange.append(monthlyChangeProfits) # stores monthly changes in a list
 
+        profitsChange = profitsChange + monthlyChangeProfits
+        firstProfit = revenue
 
+        #change = (int(row[1], 2)) - (int(row[1], 1))
+        #average = (change)-(totalMonths - 1)
+        average = (profitsChange/totalMonths - 1)
 
-# average change = second row minus first row, repeat. Then divide by totalMonths -1 because we only did 85 calculations
+        grIncrease = max(monthlyChange)
+        grDecrease = min(monthlyChange)
 
+        increaseDate = date[monthlyChange.index(grIncrease)]
+        decreaseDate = date[monthlyChange.index(grDecrease)]
 
+    print(" ")
+    print("Financial Analysis")
+    print("----------------------------")
+    print(f"Total Months: {totalMonths}")
+    print(f"Total: ${totalProfits}")
+    print(f"Average Change: $" + str(int(average)))
+    print(f"Greatest Increase in Profits: " + str(increaseDate) + " ($" + str(grIncrease) + ")")
+    print(f"Greatest Decrease in Profits: "+ str(decreaseDate) + " ($" + str(grDecrease)+ ")")
 
-
-print(" ")
-print("Financial Analysis")
-print("----------------------------")
-print(f"Total Months: {totalMonths}")
-print(f"Total: ${totalProfits}")
-print(f"Average Change: ")
-print(f"Greatest Increase in Profits: ")
-print(f"Greatest Decrease in Profits: ")
+with open(os.path.join('analysis','financial_analysis.txt'), "w") as txt:
+    txt.write("Financial Analysis"+ "\n")
+    txt.write("----------------------------\n")
+    txt.write(f"Total Months: {totalMonths}\n")
+    txt.write("Total Profits: " + "$" + str(totalProfits) +"\n")
+    txt.write("Average Change: $" + str(int(average)) + "\n")
+    txt.write("Greatest Increase in Profits: " + str(increaseDate) + " ($" + str(grIncrease) + ")\n")
+    txt.write("Greatest Decrease in Profits: " + str(decreaseDate) + " ($" + str(grDecrease) + ")")
