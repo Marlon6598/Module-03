@@ -9,14 +9,14 @@ with open(csvFilePath) as csvFile: # opens the file and saves it as an object na
     
     totalMonths = len(list(csvReader)) # the total months is the length of the dataset minus the header
 
-    total = 1
+    totalProfit = 1
 
 
 
 print("Financial Analysis")
 print("----------------------------")
 print(f"Total Months: {totalMonths}")
-print(f"Total: ${total}")
+print(f"Total: ${totalProfit}")
 print(f"Average Change: ")
 print(f"Greatest increase in Profits: ")
 print(f"Greatest Decrease in Profits: ")
