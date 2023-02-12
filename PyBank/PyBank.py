@@ -4,36 +4,35 @@ import csv # imports file-handling funcions
 csvFilePath = os.path.join('Resources', 'budget_data.csv') # Specifies directory of .csv file
 
 monthlyChange = [] # list to hold the difference between each pair of dates
-date = [] # list to hold dates
-
-totalMonths = 0
+profits = [] # list to hold all the profits and losses in order to calculate the average change
+date = [] # list to hold all the dates in the dataset
 totalProfits = 0
 profitsChange = 0
 firstProfit = 0
 count = 0
+
+firstNumber = 0 # first variable to calculate average change
+secondNumber = 1 # second variable to calculate average change
+subTotal = 0 # variable to contain the difference between two months of profits / losses
+averageChange = 0 # variable to contain the total of all differences between months divided by the length of the dataset minus one
 
 with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and saves it as an object named csvFile
     csvReader = csv.reader(csvFile, delimiter=",") # specifies the object name and delimiter for the reader in the open() function
     header = next(csvReader) # reads the row of headers and skips over this row for our data
 
     for row in csvReader:
-        count += 1
-        date.append(row[0]) # the rows in the dates column is appended to date
+        count += 1 # scans row-by-row through the dataset
+        date.append(row[0]) # appends the rows in the dates column to date
+        profits.append(float(row[1]))
 
-        revenue = int(row[1])
-        totalMonths += 1 # the total months is the total count of each row sans the header
+        revenue = int(row[1]) # revenue is the integer in the profits/losses column
         totalProfits = totalProfits + int(row[1]) # the total profit is the summation of all rows sans the header
 
         monthlyChangeProfits = revenue - firstProfit
-        
         monthlyChange.append(monthlyChangeProfits) # stores monthly changes in a list
 
         profitsChange = profitsChange + monthlyChangeProfits
         firstProfit = revenue
-
-        #change = (int(row[1], 2)) - (int(row[1], 1))
-        #average = (change)-(totalMonths - 1)
-        average = (profitsChange/totalMonths - 1)
 
         grIncrease = max(monthlyChange)
         grDecrease = min(monthlyChange)
@@ -41,20 +40,31 @@ with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and s
         increaseDate = date[monthlyChange.index(grIncrease)]
         decreaseDate = date[monthlyChange.index(grDecrease)]
 
+    for i in profits:
+        if secondNumber == len(profits): 
+            secondNumber = len(profits) - 1
+
+        subTotal = profits[secondNumber] - profits[firstNumber]
+        averageChange = averageChange + subTotal
+        firstNumber += 1
+        secondNumber += 1
+
+    averageChange = averageChange / (len(profits) - 1) # the average change is the total of the averages divided by the number of rows minus one
+
     print(" ")
     print("Financial Analysis")
     print("----------------------------")
-    print(f"Total Months: {totalMonths}")
+    print(f"Total Months: {count}")
     print(f"Total: ${totalProfits}")
-    print(f"Average Change: $" + str(int(average)))
+    print("Average Change: $" + str(round(averageChange, 2)))
     print(f"Greatest Increase in Profits: " + str(increaseDate) + " ($" + str(grIncrease) + ")")
     print(f"Greatest Decrease in Profits: "+ str(decreaseDate) + " ($" + str(grDecrease)+ ")")
 
-with open(os.path.join('analysis','financial_analysis.txt'), "w") as txt:
+with open(os.path.join('analysis','financial_analysis.txt'), "w") as txt: # exports data into a text document in the "analysis" folder
     txt.write("Financial Analysis"+ "\n")
     txt.write("----------------------------\n")
-    txt.write(f"Total Months: {totalMonths}\n")
+    txt.write(f"Total Months: {count}\n")
     txt.write("Total Profits: " + "$" + str(totalProfits) +"\n")
-    txt.write("Average Change: $" + str(int(average)) + "\n")
+    txt.write("Average Change: $" + str(round(averageChange, 2)) + "\n")
     txt.write("Greatest Increase in Profits: " + str(increaseDate) + " ($" + str(grIncrease) + ")\n")
     txt.write("Greatest Decrease in Profits: " + str(decreaseDate) + " ($" + str(grDecrease) + ")")
