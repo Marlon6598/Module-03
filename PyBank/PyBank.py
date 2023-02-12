@@ -13,7 +13,7 @@ count = 0
 
 firstNumber = 0 # first variable to calculate average change
 secondNumber = 1 # second variable to calculate average change
-subTotal = 0 # variable to contain the difference between two months of profits / losses
+difference = 0 # variable to contain the difference between two months of profits / losses
 averageChange = 0 # variable to contain the total of all differences between months divided by the length of the dataset minus one
 
 with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and saves it as an object named csvFile
@@ -37,15 +37,15 @@ with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and s
         grIncrease = max(monthlyChange)
         grDecrease = min(monthlyChange)
 
-        increaseDate = date[monthlyChange.index(grIncrease)]
-        decreaseDate = date[monthlyChange.index(grDecrease)]
+        increaseDate = date[monthlyChange.index(grIncrease)] 
+        decreaseDate = date[monthlyChange.index(grDecrease)] # increaseDate & decreaseDate are the dates that share the same index as the max & min value of monthlyChange
 
-    for i in profits:
-        if secondNumber == len(profits): 
-            secondNumber = len(profits) - 1
+    for i in profits: # for loop that will calculate the average change
+        if secondNumber == len(profits):
+            secondNumber = len(profits) - 1 # this if statement prevents "list index out of range" error from occurring
 
-        subTotal = profits[secondNumber] - profits[firstNumber]
-        averageChange = averageChange + subTotal
+        difference = profits[secondNumber] - profits[firstNumber]
+        averageChange = averageChange + difference
         firstNumber += 1
         secondNumber += 1
 

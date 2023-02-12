@@ -44,7 +44,7 @@ with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and s
 with open(os.path.join('analysis','election_analysis.txt'), "w") as txt: # exports data into a text document in the "analysis" folder
     txt.write("Election Results\n")
     txt.write("-------------------------\n")
-    txt.write("Total Vote: " + str(count) + "\n")
+    txt.write("Total Votes: " + str(count) + "\n")
     txt.write("-------------------------\n")
     for i in range(len(set(candidate))):
         txt.write(candidate[i] + ": " + str(votePercentRounded[i]) +"% (" + str(totalVote[i]) + ")\n")
