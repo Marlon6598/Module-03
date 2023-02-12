@@ -26,18 +26,18 @@ with open(csvFilePath, "r", encoding="utf-8") as csvFile: # opens the file and s
         percentTotal = (voteTotal/count)*100 # finds the percent of total votes per candidate
         votePercent.append(percentTotal)
         
-    winning_vote_count = max(voteCount)
-    winner = candidate[voteCount.index(winning_vote_count)]
+    winningCount = max(voteCount)
+    winner = candidate[voteCount.index(winningCount)]
  
     print(" ")
-    print("Election Results")   
+    print("Election Results")
     print("-------------------------")
-    print("Total Votes :" + str(count))    
+    print("Total Votes :" + str(count))
     print("-------------------------")
     for i in range(len(candidate)):
-            print(candidate[i] + ": " + str(votePercent[i]) +"% (" + str(voteCount[i])+ ")")
+        print(candidate[i] + ": " + str(votePercent[i]) +"% (" + str(voteCount[i])+ ")")
     print("-------------------------")
-    print("The winner is: " + winner)
+    print("Winner: " + winner)
     print("-------------------------")
 
 with open(os.path.join('analysis','election_analysis.txt'), "w") as txt:
@@ -48,5 +48,5 @@ with open(os.path.join('analysis','election_analysis.txt'), "w") as txt:
     for i in range(len(set(candidate))):
         txt.write(candidate[i] + ": " + str(votePercent[i]) +"% (" + str(voteCount[i]) + ")\n")
     txt.write("-------------------------\n")
-    txt.write("The winner is: " + winner + "\n")
-    txt.write("-------------------------\n")
+    txt.write("Winner: " + winner + "\n")
+    txt.write("-------------------------")
